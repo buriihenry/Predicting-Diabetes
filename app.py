@@ -16,3 +16,27 @@ Insulin = st.text_input("Insulin Level (IU/mL) eg. 80")
 BMI = st.text_input("Body Mass Index (kg/m²) eg. 23.1")
 DPF = st.text_input("Diabetes Pedigree Function eg. 0.52")
 Age = st.text_input("Age (years) eg. 34")
+
+# Load the Model
+model = pickle.load(open('diabete_Prediction_model', 'rb'))
+
+# Predictin function
+def prediction(Pregnancies, Glucose, BloodPressure, SkinThickness, Insulin, BMI, DPF, Age):
+    preg = int(Pregnancies)
+    glu = float(Glucose)
+    blp = float(BloodPressure)
+    st = float(SkinThickness)
+    insu = float(Insulin)
+    bmi = float(BMI)
+    dpf = float(DPF)
+    age = int(Age)
+    x = [[preg,glu,blp,st,insu,bmi,dpf,age]]
+    return model.predict(x)[0]
+
+    # Submit button
+if st.button('Submit'):
+    result = prediction(Pregnancies, Glucose,BloodPressure,SkinThickness,Insulin,BMI,DPF,Age)
+    if result==0:
+        st.write("Great! You DON'T have Diabetes")
+    else:
+        st.write("Oops! You have Diabetes")
